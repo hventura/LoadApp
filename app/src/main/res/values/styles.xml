@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AttributionText">
+        <item name="android:fontFamily">@font/raleway</item>
+        <item name="android:textSize">@dimen/small_text_size</item>
+    </style>
+
+    <style name="TextNormal">
+        <item name="android:fontFamily">@font/raleway</item>
+        <item name="android:textSize">@dimen/default_text_size</item>
+    </style>
+
+    <style name="TextNormal_bold">
+        <item name="android:fontFamily">@font/raleway_bold</item>
+        <item name="android:textSize">@dimen/default_text_size</item>
+    </style>
+
+</resources>
