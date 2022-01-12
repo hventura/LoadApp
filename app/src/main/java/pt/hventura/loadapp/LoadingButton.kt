@@ -8,6 +8,7 @@ import android.graphics.Paint
 import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.animation.doOnEnd
 import kotlin.properties.Delegates
 
 class LoadingButton @JvmOverloads constructor(
@@ -15,6 +16,7 @@ class LoadingButton @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
     private var widthSize = 0
     private var heightSize = 0
+    private var progressLoadingBar = 0f
     private var mLoadColor by Delegates.notNull<Int>()
     private var mLoadCircleColor by Delegates.notNull<Int>()
     private var mButtonText: String = resources.getString(R.string.button_name)
@@ -69,6 +71,7 @@ class LoadingButton @JvmOverloads constructor(
             drawRectangle(it)
             drawLoadingRectangle(it)
             drawButtonText(it)
+            drawLoadingCircle(it)
         }
 
     }
@@ -80,7 +83,7 @@ class LoadingButton @JvmOverloads constructor(
 
     private fun drawLoadingRectangle(canvas: Canvas) {
         paint.color = mLoadColor
-        canvas.drawRect(0f, 0f, 0f, heightSize.toFloat(), paint)
+        canvas.drawRect(0f, 0f, progressLoadingBar, heightSize.toFloat(), paint)
     }
 
     private fun drawButtonText(canvas: Canvas) {
@@ -91,12 +94,19 @@ class LoadingButton @JvmOverloads constructor(
         canvas.drawText(mButtonText, positionX, positionY, paint)
     }
 
+    private fun drawLoadingCircle(canvas: Canvas) {
+        paint.color = mLoadCircleColor
+        val positionX = (widthSize.toFloat() - 200)
+        val positionY = (heightSize / 2).toFloat()
+        canvas.drawCircle(positionX, positionY, progressLoadingBar, paint)
+    }
+
     override fun performClick(): Boolean {
+        super.performClick()
         buttonState = ButtonState.Clicked
         invalidate()
         return true
     }
-
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val minw: Int = paddingLeft + paddingRight + suggestedMinimumWidth
@@ -108,18 +118,34 @@ class LoadingButton @JvmOverloads constructor(
     }
 
     private fun buttonStateClicked() {
-        /* Testing purpose only */
         mButtonText = resources.getString(R.string.button_loading)
-        invalidate()
+        buttonState = ButtonState.Loading
     }
 
     private fun buttonStateLoading() {
+        isClickable = false
         mButtonText = resources.getString(R.string.button_loading)
-        invalidate()
+
+        valueAnimator.apply {
+            addUpdateListener { animator ->
+                progressLoadingBar = (animator.animatedValue) as Float
+                invalidate()
+            }
+            duration = 2000
+            start()
+        }
+        valueAnimator.doOnEnd {
+            buttonState = ButtonState.Completed
+        }
+
     }
 
     private fun buttonStateCompleted() {
         isClickable = true
+        progressLoadingBar = 0f
+        mButtonText = resources.getString(R.string.button_name)
+        valueAnimator.cancel()
+        invalidate()
     }
 
 
