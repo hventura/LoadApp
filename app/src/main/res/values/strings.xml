@@ -3,8 +3,9 @@
     <string name="app_description">Download files from Internet</string>
     <string name="action_settings">Settings</string>
 
-    <string name="notification_title">Udacity: Android Kotlin Nanodegree </string>
-    <string name="notification_description">The Project 3 repository is downloaded</string>
+    <string name="download_notification_channel_id">channel_loadapp</string>
+    <string name="download_notification_channel_name">channel_loadapp_files</string>
+    <string name="notification_title">Udacity Load App: Android Kotlin Nanodegree </string>
     <string name="notification_button">See changes</string>
 
     <string name="button_name">Download</string>
@@ -15,8 +16,21 @@
         from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>`</string>
 
     <string name="image_description">Main Image of the App</string>
-    
-    <string name="option1">Glide - Image Loading Library by BumpTech</string>
-    <string name="option2">LoadApp - Current repository by Udacity</string>
-    <string name="option3">Retrofit - Type-Safe HTTP client for Android and Java by Square, Inc</string>
+
+    <string name="option1_text">Glide - Image Loading Library by BumpTech</string>
+    <string name="option1_url">https://github.com/bumptech/glide/archive/refs/heads/master.zip</string>
+    <string name="option1_notification_description">Glide Repository has been downloaded</string>
+
+    <string name="option2_text">LoadApp - Current repository by Udacity</string>
+    <string name="option2_url">https://github.com/udacity/nd940-c3-advanced-android-programming-project-starter/archive/master.zip</string>
+    <string name="option2_notification_description">Project 3 Repository has been downloaded</string>
+
+    <string name="option3_text">Retrofit - Type-Safe HTTP client for Android and Java by Square, Inc</string>
+    <string name="option3_url">https://github.com/square/retrofit/archive/refs/heads/master.zip</string>
+    <string name="option3_notification_description">Retrofit Repository has been downloaded</string>
+
+    <string name="file_name">File Name:</string>
+    <string name="file_status">Status:</string>
+    <string name="details_ok_button">OK</string>
+
 </resources>

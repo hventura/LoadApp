@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="LoadingButton">
+        <attr name="doAnimation" format="boolean" />
         <attr name="loadColor" format="color" />
         <attr name="loadCircleColor" format="color" />
         <attr name="textPosition" format="enum">
