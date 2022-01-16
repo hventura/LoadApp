@@ -1,4 +1,4 @@
-package pt.hventura.loadapp
+package pt.hventura.loadapp.chooseFile
 
 import android.app.DownloadManager
 import android.app.NotificationChannel
@@ -19,9 +19,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import pt.hventura.loadapp.R
 import pt.hventura.loadapp.databinding.ActivityMainBinding
+import pt.hventura.loadapp.ui.LoadingButton
+import pt.hventura.loadapp.utilities.UtilityFunctions.getFileNameFromURL
+import pt.hventura.loadapp.utilities.UtilityFunctions.hideKeyboard
 import pt.hventura.loadapp.utilities.sendNotification
 import timber.log.Timber
 import java.io.FileNotFoundException
@@ -32,15 +37,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MainViewModel
     private lateinit var notificationManager: NotificationManager
-    private lateinit var pendingIntent: PendingIntent
-    private lateinit var action: NotificationCompat.Action
     private lateinit var loadingButton: LoadingButton
+    private var noOptions: Boolean = false
     private var downloadID: Long = 0
     private var url = ""
     private var notificationMessage = ""
-    private var file: ParcelFileDescriptor? = null
+    private var fileName = ""
+    private var file: ParcelFileDescriptor? = null // Needed for using with another app or interaction with the file it self(*)
     private var downloadManager: DownloadManager? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,27 +66,53 @@ class MainActivity : AppCompatActivity() {
 
         // CONTROL FLOW - CLICKS AND CHANGES
         binding.contentMain.downloadOption.setOnCheckedChangeListener { _, i ->
+            noOptions = false
             when (i) {
                 R.id.option1 -> {
                     url = resources.getString(R.string.option1_url)
                     notificationMessage = resources.getString(R.string.option1_notification_description)
+                    fileName = resources.getString(R.string.option1_text)
                 }
                 R.id.option2 -> {
                     url = resources.getString(R.string.option2_url)
                     notificationMessage = resources.getString(R.string.option2_notification_description)
+                    fileName = resources.getString(R.string.option2_text)
                 }
                 R.id.option3 -> {
                     url = resources.getString(R.string.option3_url)
                     notificationMessage = resources.getString(R.string.option3_notification_description)
+                    fileName = resources.getString(R.string.option3_text)
                 }
                 else -> {
                     url = ""
                     notificationMessage = ""
                 }
             }
+            if (url.isNotBlank()) {
+                binding.contentMain.customUrlValue.setText("")
+                if (!noOptions) {
+                    binding.contentMain.customUrl.clearFocus()
+                }
+                hideKeyboard(this, binding.root)
+            }
+        }
+
+        binding.contentMain.customUrlValue.doOnTextChanged { _, _, _, count ->
+            if (count > 0) {
+                if (!noOptions) {
+                    binding.contentMain.downloadOption.clearCheck()
+                    noOptions = true
+                }
+            }
         }
 
         loadingButton.setOnClickListener {
+            if (noOptions) {
+                url = binding.contentMain.customUrlValue.text.toString()
+                notificationMessage = resources.getString(R.string.custom_url_notification_description)
+                fileName = getFileNameFromURL(url)
+            }
+
             if (url == "") {
                 Toast.makeText(this, "Please select a valid option", Toast.LENGTH_SHORT).show()
             } else {
@@ -91,6 +121,24 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    /**
+     * FROM: https://developer.android.com/guide/components/broadcasts#context-registered-receivers
+     * (Point 3)
+     * Be mindful of where you register and unregister the receiver, for example,
+     * if you register a receiver in onCreate(Bundle) using the activity's context,
+     * you should unregister it in onDestroy() to prevent leaking the receiver out
+     * of the activity context.
+     * If you register a receiver in onResume(), you should unregister it in onPause()
+     * to prevent registering it multiple times (If you don't want to receive broadcasts
+     * when paused, and this can cut down on unnecessary system overhead).
+     * Do not unregister in onSaveInstanceState(Bundle),
+     * because this isn't called if the user moves back in the history stack.
+     * */
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(receiver)
     }
 
     private val receiver = object : BroadcastReceiver() {
@@ -111,16 +159,14 @@ class MainActivity : AppCompatActivity() {
              * */
             if (cursor.moveToFirst()) {
                 val columnIndex = cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)
-                val status = cursor.getInt(columnIndex)
-
-                when (status) {
+                when (cursor.getInt(columnIndex)) {
                     DownloadManager.STATUS_SUCCESSFUL -> {
                         try {
-                            //file = downloadManager!!.openDownloadedFile(downloadID)
+                            // Needed for using with another app or interaction with the file it self(*)
+                            // file = downloadManager!!.openDownloadedFile(downloadID)
                             if (downloadID == id) {
-                                Toast.makeText(this@MainActivity, "Download Completed", Toast.LENGTH_SHORT).show()
                                 loadingButton.downloadComplete()
-                                notificationManager.sendNotification(notificationMessage, this@MainActivity, url)
+                                notificationManager.sendNotification(notificationMessage, this@MainActivity, fileName, "Success")
                                 return
                             }
                         } catch (e: FileNotFoundException) {
@@ -129,10 +175,15 @@ class MainActivity : AppCompatActivity() {
 
                     }
                     DownloadManager.STATUS_FAILED -> {
-                        Toast.makeText(this@MainActivity, "Download Failed", Toast.LENGTH_SHORT).show()
+                        // Custom URL always get FAILED STATUS ... cannot figure it out why :(
+                        loadingButton.downloadComplete()
+                        notificationManager.sendNotification(notificationMessage, this@MainActivity, fileName, "Fail")
                     }
                 }
                 binding.contentMain.downloadOption.clearCheck()
+                binding.contentMain.customUrlValue.setText("")
+                binding.contentMain.customUrl.clearFocus()
+                hideKeyboard(this@MainActivity, binding.root)
             }
         }
     }
@@ -181,23 +232,4 @@ class MainActivity : AppCompatActivity() {
             notificationManager.createNotificationChannel(notificationChannel)
         }
     }
-
-    /**
-     * FROM: https://developer.android.com/guide/components/broadcasts#context-registered-receivers
-     * (Point 3)
-     * Be mindful of where you register and unregister the receiver, for example,
-     * if you register a receiver in onCreate(Bundle) using the activity's context,
-     * you should unregister it in onDestroy() to prevent leaking the receiver out
-     * of the activity context.
-     * If you register a receiver in onResume(), you should unregister it in onPause()
-     * to prevent registering it multiple times (If you don't want to receive broadcasts
-     * when paused, and this can cut down on unnecessary system overhead).
-     * Do not unregister in onSaveInstanceState(Bundle),
-     * because this isn't called if the user moves back in the history stack.
-     * */
-    override fun onDestroy() {
-        super.onDestroy()
-        unregisterReceiver(receiver)
-    }
-
 }

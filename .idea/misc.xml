@@ -4,10 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/HVentura/Desktop/nanodegreeKotlin/PartThree/LoadApp/app/src/main/res/drawable/ic_download.xml" value="0.16111111111111112" />
-        <entry key="..\:/Users/HVentura/Desktop/nanodegreeKotlin/PartThree/LoadApp/app/src/main/res/layout-land/content_main.xml" value="0.14188034188034188" />
+        <entry key="..\:/Users/HVentura/Desktop/nanodegreeKotlin/PartThree/LoadApp/app/src/main/res/layout-land/content_detail.xml" value="0.12" />
+        <entry key="..\:/Users/HVentura/Desktop/nanodegreeKotlin/PartThree/LoadApp/app/src/main/res/layout-land/content_main.xml" value="0.28888888888888886" />
         <entry key="..\:/Users/HVentura/Desktop/nanodegreeKotlin/PartThree/LoadApp/app/src/main/res/layout/activity_detail.xml" value="0.14786324786324787" />
-        <entry key="..\:/Users/HVentura/Desktop/nanodegreeKotlin/PartThree/LoadApp/app/src/main/res/layout/activity_main.xml" value="0.3611111111111111" />
-        <entry key="..\:/Users/HVentura/Desktop/nanodegreeKotlin/PartThree/LoadApp/app/src/main/res/layout/content_detail.xml" value="0.18" />
+        <entry key="..\:/Users/HVentura/Desktop/nanodegreeKotlin/PartThree/LoadApp/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/HVentura/Desktop/nanodegreeKotlin/PartThree/LoadApp/app/src/main/res/layout/content_detail.xml" value="0.1" />
         <entry key="..\:/Users/HVentura/Desktop/nanodegreeKotlin/PartThree/LoadApp/app/src/main/res/layout/content_main.xml" value="0.28515625" />
       </map>
     </option>
@@ -15,5 +16,12 @@
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="ProjectRootManager" version="2" languageLevel="JDK_15" project-jdk-name="openjdk-17" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.1" />
+      </ProjectState>
+    </option>
   </component>
 </project>

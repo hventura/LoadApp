@@ -7,38 +7,39 @@
 
         <variable
             name="viewModel"
-            type="pt.hventura.loadapp.MainViewModel" />
+            type="pt.hventura.loadapp.chooseFile.MainViewModel" />
     </data>
 
+    <!-- Design/UI is not my strength, struggling to get everything in here :P -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context=".MainActivity"
+        tools:context=".chooseFile.MainActivity"
         tools:showIn="@layout/activity_main">
 
         <LinearLayout
+            android:id="@+id/landCenterContent"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:baselineAligned="false"
             android:orientation="horizontal"
             android:weightSum="2"
-            app:layout_constraintBottom_toTopOf="@id/custom_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.4"
                 android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/topImage"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="100dp"
                     android:contentDescription="@string/image_description"
                     android:src="@drawable/ic_download"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -60,16 +61,16 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="0.6"
                 android:orientation="vertical">
 
                 <RadioGroup
                     android:id="@+id/downloadOption"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="0dp"
                     android:layout_marginStart="@dimen/large_margin"
                     android:layout_marginTop="@dimen/default_margin"
                     android:layout_marginEnd="@dimen/default_margin"
@@ -83,42 +84,101 @@
                         style="@style/TextNormal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/small_margin"
-                        android:text="@string/option1_text" />
+                        android:text="@string/option1_text"
+                        android:textSize="@dimen/medium_text_size" />
 
                     <RadioButton
                         android:id="@+id/option2"
                         style="@style/TextNormal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/small_margin"
-                        android:text="@string/option2_text" />
+                        android:text="@string/option2_text"
+                        android:textSize="@dimen/medium_text_size" />
 
                     <RadioButton
                         android:id="@+id/option3"
                         style="@style/TextNormal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/small_margin"
-                        android:text="@string/option3_text" />
+                        android:text="@string/option3_text"
+                        android:textSize="@dimen/medium_text_size" />
 
                 </RadioGroup>
 
-            </LinearLayout>
+            </ScrollView>
 
         </LinearLayout>
 
+        <RelativeLayout
+            android:id="@+id/middleORtext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            app:layout_constraintBottom_toTopOf="@id/customUrl"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-        <pt.hventura.loadapp.LoadingButton
+            <TextView
+                android:id="@+id/tvText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="@string/or"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:layout_toStartOf="@id/tvText"
+                android:background="@color/black" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="16dp"
+                android:layout_toEndOf="@id/tvText"
+                android:background="@color/black" />
+
+        </RelativeLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/customUrl"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/large_margin"
+            android:layout_marginEnd="@dimen/large_margin"
+            android:hint="@string/custom_url_field"
+            app:endIconMode="clear_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/middleORtext"
+            app:startIconDrawable="@drawable/ic_link">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/customUrlValue"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textUri" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <pt.hventura.loadapp.ui.LoadingButton
             android:id="@+id/custom_button"
             style="@style/TextNormal"
             android:layout_width="0dp"
             android:layout_height="60dp"
-            android:layout_margin="20dp"
+            android:layout_margin="@dimen/large_margin"
             android:text="@string/button_loading"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/customUrl"
             tools:background="@color/colorPrimary" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

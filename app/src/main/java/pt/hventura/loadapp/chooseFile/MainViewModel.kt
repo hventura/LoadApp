@@ -1,4 +1,4 @@
-package pt.hventura.loadapp
+package pt.hventura.loadapp.chooseFile
 
 import androidx.lifecycle.ViewModel
 

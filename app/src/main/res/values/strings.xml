@@ -12,7 +12,7 @@
     <string name="button_loading">We are loading </string>
     <string name="title_activity_detail">DetailActivity</string>
 
-    <string name="icon_attribution">`<div>Icons made by <a href="" title="Arafat Uddin">Arafat Uddin</a>
+    <string name="icon_attribution">`<div>Image made by <a href="" title="Arafat Uddin">Arafat Uddin</a>
         from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>`</string>
 
     <string name="image_description">Main Image of the App</string>
@@ -29,8 +29,12 @@
     <string name="option3_url">https://github.com/square/retrofit/archive/refs/heads/master.zip</string>
     <string name="option3_notification_description">Retrofit Repository has been downloaded</string>
 
+    <string name="or">OR</string>
+
     <string name="file_name">File Name:</string>
     <string name="file_status">Status:</string>
     <string name="details_ok_button">OK</string>
 
+    <string name="custom_url_field">Enter URL</string>
+    <string name="custom_url_notification_description">Custom File has been downloaded</string>
 </resources>

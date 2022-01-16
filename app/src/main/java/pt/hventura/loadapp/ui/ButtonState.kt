@@ -1,4 +1,4 @@
-package pt.hventura.loadapp
+package pt.hventura.loadapp.ui
 
 sealed class ButtonState {
     object Clicked : ButtonState()

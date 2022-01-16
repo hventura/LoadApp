@@ -1,4 +1,4 @@
-package pt.hventura.loadapp
+package pt.hventura.loadapp.ui
 
 import android.animation.ValueAnimator
 import android.content.Context
@@ -6,6 +6,7 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator
+import pt.hventura.loadapp.R
 import kotlin.properties.Delegates
 
 class LoadingButton @JvmOverloads constructor(
